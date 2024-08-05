@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReportStoreRequest;
+use App\Http\Resources\ReportsItemResource;
 use App\Http\Resources\ReportsResource;
 use App\Models\Category;
 use App\Models\Report;
@@ -19,7 +20,7 @@ class ReportController extends Controller
 
     public function getReportsByCategory(Category $category)
     {
-        return $category->reports;
+        return ReportsItemResource::collection($category->reports) ;
     }
 
     public function store(ReportStoreRequest $request)
