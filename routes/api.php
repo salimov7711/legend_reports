@@ -35,6 +35,7 @@ Route::group(['prefix' => 'photo-reports'], function () {
         Route::get('/reports-by-category/{category}', [ReportController::class, 'getReportsByCategory']);
         Route::post('/store', [ReportController::class, 'store']);
         Route::delete('/delete', [ReportController::class, 'delete']);
+        Route::patch('/update/{report}', [ReportController::class, 'update']);
     });
 
 });
