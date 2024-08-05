@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReportStoreRequest;
+use App\Http\Resources\ReportsResource;
 use App\Models\Category;
 use App\Models\Report;
 use Illuminate\Http\Request;
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
+
+    public function index() {
+        $reports =  Category::query()->with('reports')->get();
+        return ReportsResource::collection($reports);
+    }
+
     public function getReportsByCategory(Category $category)
     {
         return $category->reports;

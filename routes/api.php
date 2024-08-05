@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'photo-reports'], function () {
+    Route::get('/', [ReportController::class, 'index']);
+
     Route::group(['prefix' => 'category'], function () {
         Route::get('/', [CategoryController::class, 'index']);
         Route::get('/{category}', [CategoryController::class, 'show']);
