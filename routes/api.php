@@ -20,22 +20,32 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+});
 Route::group(['prefix' => 'photo-reports'], function () {
     Route::get('/', [ReportController::class, 'index']);
 
-    Route::group(['prefix' => 'category'], function () {
+    Route::get('/getUser', [ReportController::class, 'getUser'])->middleware('auth:sanctum');
+    Route::get('/all-reports', [ReportController::class, 'getAllReports']);
+    Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
+    Route::group(['prefix' => 'category' ,'middleware' => ['auth:sanctum']], function () {
         Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/get-all', [CategoryController::class, 'getAllCats']);
         Route::get('/{category}', [CategoryController::class, 'show']);
         Route::post('store', [CategoryController::class, 'store']);
-        Route::patch('/update/{category}', [CategoryController::class, 'update']);
+        Route::post('/update/{category}', [CategoryController::class, 'update']);
         Route::delete('/delete/{category}', [CategoryController::class, 'delete']);
     });
 
-    Route::group(['prefix' => 'report'], function () {
+    Route::group(['prefix' => 'report',  'middleware' => ['auth:sanctum']], function () {
+        Route::get('/{report}', [ReportController::class, 'show']);
         Route::get('/reports-by-category/{category}', [ReportController::class, 'getReportsByCategory']);
-        Route::post('/store', [ReportController::class, 'store']);
-        Route::delete('/delete', [ReportController::class, 'delete']);
-        Route::patch('/update/{report}', [ReportController::class, 'update']);
+        Route::post('/store', [ReportController::class, 'store'])->middleware('auth:sanctum');
+        Route::delete('/delete/{report}', [ReportController::class, 'delete']);
+        Route::post('/update/{report}', [ReportController::class, 'update']);
     });
 
 });

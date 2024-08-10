@@ -17,7 +17,9 @@ class ReportsItemResource extends JsonResource
         return [
             'id' => $this['id'],
             'title' => $this['title'],
-            'image' => $this['image'] ? url('storage/'. $this['image']) : null
+            'image' => $this['image'] ? url('storage/'. $this['image']) : null,
+            'created_at' => $this['created_at'],
+            'category' => $this['category']->name
         ];
     }
 }

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReportStoreRequest;
 use App\Http\Requests\ReportUpdateRequest;
+use App\Http\Resources\GetReportItemResource;
 use App\Http\Resources\ReportsItemResource;
 use App\Http\Resources\ReportsResource;
 use App\Models\Category;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
@@ -20,6 +22,20 @@ class ReportController extends Controller
         return ReportsResource::collection($reports);
     }
 
+    public function getUser(Request $request) {
+        $user = Auth::user();
+        return  $user;
+    }
+    public function getAllReports(Request $request)
+    {
+        $reports = Report::query()->paginate($request->input('per_page', 10));
+        return ReportsItemResource::collection($reports);
+    }
+
+    public function show(Report $report) {
+//        return $report;
+        return GetReportItemResource::make($report);
+    }
     public function getReportsByCategory(Category $category)
     {
         return ReportsItemResource::collection($category->reports);
@@ -27,42 +43,35 @@ class ReportController extends Controller
 
     public function store(ReportStoreRequest $request)
     {
-        $items = collect($request->input('items'));
 
-        $items->each(function ($item, $key) use ($request) {
 
-            $image = $request->file("items.$key.image");
+
+            $image = $request->file("image");
             if ($image) {
                 $imagePath = $image->store('images/real-estates');
             } else {
                 $imagePath = null;
             }
             $report = new Report();
-            $report->title = $item['title'];
+            $report->title = $request['title'];
             $report->image = $imagePath;
-            $report->category_id = $item['category_id'];
+            $report->category_id = $request['category_id'];
             $report->save();
-        });
 
-        return response()->json(['messages' => 'reports created successfully']);
+        return response()->json(['messages' => 'report created successfully']);
     }
 
-    public function delete(Request $request)
+    public function delete(Report $report)
     {
-        $request->validate([
-            'ids' => 'nullable|array',
-            'ids.*' => 'numeric'
-        ]);
 
-        $ids = $request->input('ids', []);
-        $reports = Report::query()->whereIn('id', $ids)->get();
-        $reports->each(function ($report) {
+
+
+
             if ($report->image != null) {
                 Storage::delete($report->image);
 
             }
             $report->delete();
-        });
 
         return response()->json(['message' => 'deleted successfully']);
     }
@@ -71,8 +80,8 @@ class ReportController extends Controller
     {
         $report->title = $request->input('title');
         $image = $report->image;
-        if($request->hasFile('image')) {
-            if($image) {
+        if ($request->hasFile('image')) {
+            if ($image) {
                 Storage::delete($report->image);
             }
             $report->image = $request->file('image')->store('images/real-estates');
@@ -83,7 +92,7 @@ class ReportController extends Controller
         $report->order = $request->input('order');
         $report->save();
 
-        return response()->json(['message' => 'updated successfully'] ,201);
+        return response()->json(['message' => 'updated successfully'], 201);
     }
 
 }

@@ -23,7 +23,7 @@ class ReportUpdateRequest extends FormRequest
     {
         return [
             'title' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,png,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,webp|max:1024',
             'category_id'  => 'nullable|numeric',
             'order' => 'nullable|numeric'
         ];

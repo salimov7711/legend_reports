@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Category::all();
+        return Category::paginate($request->input('per_page', 12));
+    }
+
+    public function getAllCats() {
+        return Category::all()->map(function ($cat) {
+            return [
+               'value' => $cat['id'],
+                'text' => $cat['name']
+            ];
+        });
     }
 
     public function store(Request $request)
@@ -32,14 +41,14 @@ class CategoryController extends Controller
 
         $category->name = $request->input('name');
         $category->save();
-        return response()->json(['message' => 'updated successfully'], 201);
+        return response()->json(['message' => 'updated successfully'],200);
     }
 
 
     public function delete(Category $category)
     {
         $category->delete();
-        return response()->json(['message' => 'deleted successfully'], 201);
+        return response()->json(['message' => 'deleted successfully'], 200);
     }
 
 

@@ -22,10 +22,10 @@ class ReportStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'items' => 'required|array',
-            'items.*.title' => 'nullable|string',
-            'items.*.image' => 'required|image|mimes:jpg,png,webp|max:2048',
-            'items.*.category_id' => 'required|numeric'
+
+            'title' => 'nullable|string',
+            'image' => 'required|image|mimes:jpg,png,webp|max:2048',
+            'category_id' => 'required|numeric'
         ];
     }
 }

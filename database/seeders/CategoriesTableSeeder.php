@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,8 @@ class CategoriesTableSeeder extends Seeder
             ['name' => 'Декабрь-2024'],
         ];
 
-        DB::table('categories')->insert($categories);
+        foreach ($categories as $category) {
+            Category::create($category);
+        }
     }
 }
