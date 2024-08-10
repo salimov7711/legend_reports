@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        return Category::paginate($request->input('per_page', 12));
+        return Category::all();
     }
 
     public function getAllCats() {
