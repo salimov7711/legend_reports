@@ -28,7 +28,7 @@ class ReportController extends Controller
     }
     public function getAllReports(Request $request)
     {
-        $reports = Report::query()->paginate($request->input('per_page', 10));
+        $reports = Report::all();
         return ReportsItemResource::collection($reports);
     }
 
