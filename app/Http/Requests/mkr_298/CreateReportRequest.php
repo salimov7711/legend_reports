@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\mkr_298;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReportStoreRequest extends FormRequest
+class CreateReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class ReportStoreRequest extends FormRequest
         return [
             'title' => 'nullable|string',
             'image' => 'required|image|mimes:jpg,png,webp|max:2048',
-            'category_id' => 'required|numeric'
+            'year_id' => 'required|numeric|exists:years,id',
+            'month_id' => 'required|numeric|exists:months,id',
         ];
     }
 }
-
-
-
-
