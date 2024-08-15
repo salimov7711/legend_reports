@@ -9,4 +9,12 @@ class Report298 extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function month() {
+        return $this->hasOne(Month::class, 'id', 'month_id');
+    }
+
+    public function year() {
+        return $this->hasOne(Year::class, 'id', 'year_id');
+    }
 }

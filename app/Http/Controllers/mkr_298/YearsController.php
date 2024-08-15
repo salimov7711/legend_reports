@@ -16,14 +16,14 @@ class YearsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'year' => 'required|string|unique:years|max:4'
+            'year' => 'required|numeric|unique:years|max:2040'
         ]);
 
         $year = Year::query()->create([
             'year' => $request->year
         ]);
 
-        return response()->json(['message' => 'created successfull'], 200);
+        return response()->json(['message' => 'created successfully'], 200);
 
     }
 
@@ -35,7 +35,7 @@ class YearsController extends Controller
 
     public function update(Request $request, Year $year) {
         $request->validate([
-
+            'year' => 'required|numeric|unique:years|max:2040'
         ]);
         $year->year = $request->year;
         $year->save();

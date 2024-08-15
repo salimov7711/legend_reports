@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\mkr_298\MonthsController;
+use App\Http\Controllers\mkr_298\ReportsController;
 use App\Http\Controllers\mkr_298\UserController;
 use App\Http\Controllers\mkr_298\YearsController;
 use App\Http\Controllers\ReportController;
@@ -31,7 +32,7 @@ Route::group(['prefix' => 'photo-reports', 'middleware' => ['auth:sanctum', 'rol
     Route::get('/', [ReportController::class, 'index']);
 
     Route::get('/getUser', [ReportController::class, 'getUser']);
-    Route::get('/all-reports', [ReportController::class, 'getAllReports']);
+    Route::get('/all-reports', [ReportController::class, 'getAllReports'])->withoutMiddleware(['auth:sanctum', 'role:legend_tower']);
     Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
 
     Route::group(['prefix' => 'category', 'middleware' => ['auth:sanctum', 'role:legend_tower']], function () {
@@ -53,10 +54,14 @@ Route::group(['prefix' => 'photo-reports', 'middleware' => ['auth:sanctum', 'rol
 
 });
 
-Route::group(['prefix' => '298', 'middleware' => ['auth:sanctum', 'role:298_mkr']], function () {
+Route::group(['prefix' => 'mkr298', 'middleware' => ['auth:sanctum', 'role:298_mkr']], function () {
 
+    Route::get('/all-reports', [ReportsController::class, 'allReports'])->withoutMiddleware('auth:sanctum');
     Route::post('/login', [UserController::class, 'login'])->withoutMiddleware('auth:sanctum');
     Route::get('/logout', [UserController::class, 'logout']);
+    Route::get('/getUser', function (Request $request) {
+        return $request->user();
+    });
 
     Route::group(['prefix' => 'years'], function () {
         Route::get('/', [YearsController::class, 'index']);
@@ -72,6 +77,14 @@ Route::group(['prefix' => '298', 'middleware' => ['auth:sanctum', 'role:298_mkr'
         Route::post('/store', [MonthsController::class, 'store']);
         Route::delete('/delete/{month}', [MonthsController::class, 'delete']);
         Route::post('/update/{month}', [MonthsController::class, 'update']);
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/', [ReportsController::class, 'index']);
+        Route::get('/{report298}', [ReportsController::class, 'show']);
+        Route::post('/store', [ReportsController::class, 'store']);
+        Route::post('/update/{report298}', [ReportsController::class, 'update']);
+        Route::delete('/delete/{report298}', [ReportsController::class ,'delete']);
     });
 
 

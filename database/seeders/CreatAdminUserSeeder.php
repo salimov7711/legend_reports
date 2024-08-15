@@ -24,7 +24,7 @@ class CreatAdminUserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin_298mkr',
-                'email' => 'admin@298.tj',
+                'email' => 'admin@mkr_298.tj',
                 'password' => Hash::make('123123123'),
                 'role' => '298_mkr'
             ],

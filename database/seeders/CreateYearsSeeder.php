@@ -20,7 +20,10 @@ class CreateYearsSeeder extends Seeder
         ];
 
         foreach ($years as $year) {
-            Year::create($year);
+            if(!$year) {
+                Year::create($year);
+            }
+
         }
     }
 }

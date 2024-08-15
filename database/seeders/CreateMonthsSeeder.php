@@ -28,8 +28,11 @@ class CreateMonthsSeeder extends Seeder
             ['month' => 'Декабрь'],
         ];
 
-        foreach ($months as $month ) {
-            Month::create($month);
+        foreach ($months as $month) {
+            if (!$month) {
+                Month::create($month);
+            }
+
         }
     }
 }

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('image')->nullable();
-            $table->foreignId('year_id')->nullable()->constrained('years')->nullOnDelete();
-            $table->foreignId('month_id')->nullable()->constrained('months')->nullOnDelete();
+            $table->foreignId('year_id')->nullable()->constrained('years')->cascadeOnDelete();
+            $table->foreignId('month_id')->nullable()->constrained('months')->cascadeOnDelete();
             $table->tinyInteger('order')->default(0);
             $table->timestamps();
         });
