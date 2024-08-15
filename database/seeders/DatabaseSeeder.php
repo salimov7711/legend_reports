@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CategoriesTableSeeder::class);
         $this->call(CreatAdminUserSeeder::class);
+        $this->call(CreateMonthsSeeder::class);
+        $this->call(CreateYearsSeeder::class);
     }
 }
